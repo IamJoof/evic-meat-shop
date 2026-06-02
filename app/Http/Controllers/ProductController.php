@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateProductRequest;
 use App\Http\Services\ProductService;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -16,12 +16,21 @@ class ProductController extends Controller
 
         $products = $this->productService->getAllProduct($currentPage, $filter);
 
-        // if($products->empty()){
-        //     abort('404','There are no products currently!');
-        // }
 
         return response()->json([
             'data' => $products
         ], 200);
+    }
+
+    public function store(CreateProductRequest $request){
+
+        $validated = $request->validated();
+
+        $product = $this->productService->storeProduct($validated);
+
+        return response()->json([
+            'message' => 'Product Successfully created',
+            'data' => $product
+        ], 201);
     }
 }

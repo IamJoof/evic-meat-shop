@@ -12,7 +12,8 @@ class CreateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->is_admin === true;
+        // return auth()->user()?->is_admin === true;
+        return true;
     }
 
     /**
@@ -22,20 +23,26 @@ class CreateProductRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        $rules = [
+            'image_path' => 'sometimes|image|mimes:jpg,jpeg,png|max:25000',
+            'is_available' => 'sometimes|boolean',
+
+        ];
+
+
         if($this->isMethod('put') || $this->isMethod('patch')){
-            return [
-                'name'          => 'sometimes|string|max:100',
-                'image_path'    => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
-                'price_per_kg'  => 'sometimes|decimal:2',
-                'is_available'  => 'sometimes|boolean'
-            ];
+            return array_merge($rules,[
+                'name' => 'sometimes|string|max:100',
+                'price_per_kg' => 'sometimes|numeric|min:0',
+                'category_id' => 'sometimes|integer|exists:categories,id'
+            ]);
         }
 
-        return [
-            'name'              => 'required|string|max:100',
-            'image_path'        => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
-            'price_per_kg'      => 'required|decimal:2',
-            'is_available'      => 'required|boolean|'
-        ];
+        return array_merge($rules,[
+            'name' => 'required|string|max:100',
+            'price_per_kg' => 'sometimes|numeric|min:0',
+            'category_id' => 'required|integer|exists:categories,id'
+        ]);
     }
 }

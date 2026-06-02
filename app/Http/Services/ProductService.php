@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Http\DTO\Product\ProductResponseDTO;
 use App\Http\Repository\Contracts\ProductRepositoryInterface;
+use Illuminate\Http\UploadedFile;
 
 class ProductService
 {
@@ -32,5 +33,24 @@ class ProductService
                 filter: $filter === 'all' ? null : $filter
             );
         }, $data);
+    }
+
+    public function storeProduct(array $data){
+        
+        if(isset($data['image_path']) && $data['image_path'] instanceof UploadedFile) {
+            $data['image_path'] = $data['image_path']->store('products','public');
+        }
+
+        $newProduct = $this->productRepo->storeProduct($data);
+
+       
+            return new ProductResponseDTO(
+                name: $newProduct->name,
+                image_path: $newProduct->image_path ?? '',
+                price_per_kg: (float) $newProduct->price_per_kg,
+                is_available: (bool) $newProduct->is_available,
+                category_name: $newProduct->category_name,
+            );
+
     }
 }

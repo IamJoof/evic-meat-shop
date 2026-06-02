@@ -11,4 +11,5 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('/product')->group(function(){
     Route::get('/{id}/{filter?}', [ProductController::class,'index']);
+    Route::post('/',[ProductController::class,'store']);
 });

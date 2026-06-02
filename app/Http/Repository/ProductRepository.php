@@ -44,4 +44,31 @@ class ProductRepository implements ProductRepositoryInterface
             'total_pages' => $totalPages
         ];
     }
+
+    public function storeProduct(array $data) {
+
+
+        $data['created_at'] = now()->toDateTimeString();
+        $data['updated_at'] = now()->toDateTimeString();
+        
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+        
+        $insertQuery = "INSERT INTO products ({$columns}) VALUES ({$placeholders})";
+
+        DB::insert($insertQuery, array_values($data));
+
+        $newProductId = DB::getPdo()->lastInsertId();
+
+        $selectQuery = '
+            SELECT
+                p.*,
+                c.name as category_name
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+            WHERE p.id = ?
+        ';
+
+        return DB::selectOne($selectQuery, [$newProductId]);
+    }
 }
