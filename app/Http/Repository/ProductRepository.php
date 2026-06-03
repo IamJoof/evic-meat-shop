@@ -46,8 +46,6 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     public function storeProduct(array $data) {
-
-
         $data['created_at'] = now()->toDateTimeString();
         $data['updated_at'] = now()->toDateTimeString();
         
@@ -60,15 +58,45 @@ class ProductRepository implements ProductRepositoryInterface
 
         $newProductId = DB::getPdo()->lastInsertId();
 
+        return $this->findSpecificProduct($newProductId);
+    }
+
+    public function updateProduct(int $id ,array $data) {
+
+        if(!empty($data)) {
+            $data['updated_at'] = now()->toDateTimeString();
+
+            $setClauses = [];
+            foreach (array_keys($data) as $column) {
+                $setClauses[] = "{$column} = ?";
+            }
+            $setString = implode(', ', $setClauses);
+
+            $bindings = array_values($data);
+            $bindings[] = $id;
+
+            $updateQuery = "UPDATE products SET {$setString} WHERE id = ?";
+
+            DB::update($updateQuery, $bindings);
+        }
+
+        return $this->findSpecificProduct($id);
+    }
+
+    /**
+     * HELPERS
+     */
+
+    private function findSpecificProduct(int $id) {
         $selectQuery = '
             SELECT
                 p.*,
-                c.name as category_name
+                c.name AS category_name
             FROM products p
-            JOIN categories c ON p.category_id = c.id
+            JOIN categories c on p.category_id = c.id
             WHERE p.id = ?
         ';
 
-        return DB::selectOne($selectQuery, [$newProductId]);
+        return DB::selectOne($selectQuery, [$id]);
     }
 }
