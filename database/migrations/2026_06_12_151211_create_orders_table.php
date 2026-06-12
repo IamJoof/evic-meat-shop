@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->decimal('price_per_kg', 8, 2);
-            $table->boolean('is_available')->default(true);
+            $table->dateTime('expected_delivery_date');
+            $table->dateTime('actual_delivery_date');
+            $table->enum('status',['shipped','received','cancelled','refunded']);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('orders');
     }
 };
