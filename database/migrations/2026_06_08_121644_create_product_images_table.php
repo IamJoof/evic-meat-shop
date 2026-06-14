@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('image_paths');
             $table->boolean('is_primary')->default(false);
             $table->timestamps();
-            $table->foreignId('product_id')->references('products');
+            $table->foreignId('product_id')->constrained('products');
         });
     }
 
