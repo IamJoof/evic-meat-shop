@@ -18,6 +18,7 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'customer_name' => ['required', 'string', 'max:255'],
+            'customer_email' => ['required', 'email', 'max:255'],
             'customer_phone' => ['required', 'string', 'max:50'],
             'customer_address' => ['required', 'string', 'max:1000'],
             'fulfillment_type' => ['required', 'in:delivery,pickup'],

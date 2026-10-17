@@ -60,13 +60,22 @@ class CheckoutController extends Controller
         $deliveryFee = $validated['fulfillment_type'] === 'delivery' ? 50.00 : 0.00;
         $totalAmount = round($subtotal + $deliveryFee, 2);
 
-        $order = DB::transaction(function () use ($request, $cart, $validated, $subtotal, $deliveryFee, $totalAmount) {
+        // Link to existing user by email or active session, or maintain guest_id
+        $user = $request->user() ?? \App\Models\User::where('email', $validated['customer_email'])->first();
+        $guestId = $user ? null : ($request->session()->get('guest_id') ?? (string) Str::uuid());
+        if (! $user && ! $request->session()->has('guest_id')) {
+            $request->session()->put('guest_id', $guestId);
+        }
+
+        $order = DB::transaction(function () use ($user, $guestId, $cart, $validated, $subtotal, $deliveryFee, $totalAmount) {
             $orderNumber = 'EVIC-'.date('Ymd').'-'.strtoupper(Str::random(5));
 
             $order = Order::create([
-                'user_id' => $request->user()?->id,
+                'user_id' => $user?->id,
+                'guest_id' => $guestId,
                 'order_number' => $orderNumber,
                 'customer_name' => $validated['customer_name'],
+                'customer_email' => $validated['customer_email'],
                 'customer_phone' => $validated['customer_phone'],
                 'customer_address' => $validated['customer_address'],
                 'fulfillment_type' => $validated['fulfillment_type'],
