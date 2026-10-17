@@ -25,6 +25,13 @@ Route::get('/orders/{order:order_number}', [CustomerOrderController::class, 'sho
 Route::post('/orders/{order:order_number}/cancel', [CustomerOrderController::class, 'cancel'])->name('orders.cancel');
 Route::post('/claim-account', [\App\Http\Controllers\ClaimAccountController::class, 'store'])->name('claim-account.store');
 
+Route::prefix('support')->name('support.')->group(function () {
+    Route::get('/faqs', [\App\Http\Controllers\SupportController::class, 'faqs'])->name('faqs');
+    Route::get('/conversation', [\App\Http\Controllers\SupportController::class, 'conversation'])->name('conversation');
+    Route::post('/messages', [\App\Http\Controllers\SupportController::class, 'storeMessage'])->name('messages.store')->middleware('throttle:15,1');
+    Route::post('/order-lookup', [\App\Http\Controllers\SupportController::class, 'orderLookup'])->name('order-lookup')->middleware('throttle:15,1');
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
