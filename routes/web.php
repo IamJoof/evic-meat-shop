@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\StorefrontController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Welcome')->name('home');
-
-Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/', [StorefrontController::class, 'index'])->name('home');
+Route::get('/storefront', [StorefrontController::class, 'index'])->name('storefront.index');
+Route::get('/catalog', [StorefrontController::class, 'index'])->name('catalog.index');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/items', [CartController::class, 'store'])->name('cart.items.store');
