@@ -69,6 +69,12 @@ function deleteProduct(productId: number) {
                         Orders Board
                     </a>
                     <a
+                        href="/admin/support"
+                        class="text-xs font-bold text-neutral-600 hover:text-rose-600"
+                    >
+                        Support Inbox
+                    </a>
+                    <a
                         href="/admin/products/create"
                         class="rounded-xl bg-rose-600 px-3.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-rose-700"
                     >

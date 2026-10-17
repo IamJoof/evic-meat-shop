@@ -87,6 +87,12 @@ function updateOrderStatus(orderId: number, status: string) {
                         Product Catalog
                     </a>
                     <a
+                        href="/admin/support"
+                        class="text-xs font-bold text-neutral-600 hover:text-rose-600"
+                    >
+                        Support Inbox
+                    </a>
+                    <a
                         href="/"
                         class="text-xs font-bold text-rose-600 hover:underline"
                     >

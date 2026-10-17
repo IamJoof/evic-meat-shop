@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import CartDrawer from '@/components/Storefront/CartDrawer.vue';
 import ProductCard from '@/components/Storefront/ProductCard.vue';
 import HeroTrustBanner from '@/components/Storefront/HeroTrustBanner.vue';
+import CustomerSupportChat from '@/components/Storefront/CustomerSupportChat.vue';
 import { ShoppingBag, Search, Sparkles } from 'lucide-vue-next';
 
 interface Category {
@@ -248,5 +249,8 @@ function handleSearch() {
             :subtotal="subtotal || 0"
             @close="isCartOpen = false"
         />
+
+        <!-- Floating Customer Support Chat & FAQ -->
+        <CustomerSupportChat />
     </div>
 </template>
