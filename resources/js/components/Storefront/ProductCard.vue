@@ -24,6 +24,10 @@ const props = defineProps<{
     product: Product;
 }>();
 
+const emit = defineEmits<{
+    (e: 'added'): void;
+}>();
+
 const selectedWeight = ref<number>(1.0);
 const cuttingNotes = ref<string>('');
 const isSubmitting = ref<boolean>(false);
@@ -71,6 +75,9 @@ function addToCart() {
         },
         {
             preserveScroll: true,
+            onSuccess: () => {
+                emit('added');
+            },
             onFinish: () => {
                 isSubmitting.value = false;
                 cuttingNotes.value = '';

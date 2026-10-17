@@ -34,3 +34,23 @@ test('storefront supports search keyword filtering', function () {
         ->where('products.data.0.name', 'Sirloin Steak')
     );
 });
+
+test('storefront passes cart and subtotal to index component', function () {
+    $product = Product::factory()->create(['price_per_kg' => 350.00, 'is_available' => true]);
+
+    $this->post(route('cart.items.store'), [
+        'product_id' => $product->id,
+        'weight_kg' => 2.0,
+        'cutting_notes' => 'Thinly sliced',
+    ]);
+
+    $response = $this->get(route('storefront.index'));
+
+    $response->assertOk();
+    $response->assertInertia(fn ($page) => $page
+        ->component('Storefront/Index')
+        ->has('cart.items', 1)
+        ->where('cart.items.0.product_id', $product->id)
+        ->where('subtotal', 700)
+    );
+});

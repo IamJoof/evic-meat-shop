@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
+import { ShoppingBag, X, Trash2, ArrowRight } from 'lucide-vue-next';
 
 interface CartItem {
     id: number;
@@ -56,27 +57,38 @@ function proceedToCheckout() {
         <!-- Backdrop -->
         <div
             @click="emit('close')"
-            class="fixed inset-0 bg-neutral-900/50 backdrop-blur-xs transition-opacity"
+            class="fixed inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity"
         />
 
-        <section class="absolute inset-y-0 right-0 flex max-w-full pl-10">
+        <section class="absolute inset-y-0 right-0 flex max-w-full pl-6 sm:pl-10">
             <div
                 class="flex w-screen max-w-md flex-col justify-between bg-white shadow-2xl"
             >
                 <!-- Header -->
                 <div
-                    class="flex items-center justify-between border-b border-neutral-200 px-6 py-4"
+                    class="flex items-center justify-between border-b border-stone-200 px-6 py-4 bg-stone-50/70"
                 >
-                    <h2 class="text-lg font-bold text-neutral-900">
-                        Your Fresh Meat Order
-                    </h2>
+                    <div class="flex items-center gap-2.5">
+                        <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-900 text-white">
+                            <ShoppingBag class="h-4 w-4" />
+                        </span>
+                        <div>
+                            <h2 class="text-base font-black tracking-tight text-stone-900 font-serif">
+                                Your Butcher Cart
+                            </h2>
+                            <p class="text-xs text-stone-500">
+                                {{ cart?.items?.length || 0 }} {{ (cart?.items?.length === 1) ? 'cut' : 'cuts' }} selected
+                            </p>
+                        </div>
+                    </div>
+
                     <button
                         type="button"
                         @click="emit('close')"
-                        class="cursor-pointer text-xl font-bold text-neutral-400 hover:text-neutral-600"
+                        class="cursor-pointer rounded-lg p-1.5 text-stone-400 hover:bg-stone-200/60 hover:text-stone-700 transition"
                         aria-label="Close cart"
                     >
-                        ✕
+                        <X class="h-5 w-5" />
                     </button>
                 </div>
 
@@ -84,114 +96,122 @@ function proceedToCheckout() {
                 <div class="flex-1 space-y-4 overflow-y-auto px-6 py-4">
                     <div
                         v-if="!cart || cart.items.length === 0"
-                        class="flex flex-col items-center justify-center py-12 text-center text-neutral-500"
+                        class="flex flex-col items-center justify-center py-16 text-center text-stone-500 space-y-3"
                     >
-                        <p class="text-sm">Your order is empty.</p>
-                        <p class="mt-1 text-xs text-neutral-400">
-                            Select meat cuts from the catalog to get started.
-                        </p>
+                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-stone-100 text-stone-400">
+                            <ShoppingBag class="h-7 w-7" />
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-stone-700">Your basket is empty</p>
+                            <p class="mt-1 text-xs text-stone-400 max-w-xs">
+                                Select fresh meat cuts and custom butcher preparations from the counter to begin.
+                            </p>
+                        </div>
                     </div>
 
                     <div
                         v-else
                         v-for="item in cart.items"
                         :key="item.id"
-                        class="flex items-start justify-between border-b border-neutral-100 pb-4"
+                        class="flex items-start justify-between border-b border-stone-100 pb-4 pt-1"
                     >
-                        <div>
-                            <h4 class="text-sm font-bold text-neutral-800">
-                                {{ item.product.name }}
+                        <div class="space-y-1 pr-2">
+                            <h4 class="text-sm font-bold text-stone-900">
+                                {{ item.product?.name || 'Fresh Meat Cut' }}
                             </h4>
-                            <p class="text-xs text-neutral-500">
-                                ₱{{
-                                    Number(item.product.price_per_kg).toFixed(2)
-                                }}
-                                / kg
+                            <p class="text-xs text-stone-500">
+                                ₱{{ Number(item.product?.price_per_kg || 0).toFixed(2) }} / kg
                             </p>
                             <p
                                 v-if="item.cutting_notes"
-                                class="mt-1 rounded bg-rose-50 px-2 py-0.5 text-xs font-medium text-rose-600"
+                                class="inline-block rounded-md bg-rose-50 px-2 py-0.5 text-[11px] font-medium text-rose-800 border border-rose-100"
                             >
-                                Cut: {{ item.cutting_notes }}
+                                Prep: {{ item.cutting_notes }}
                             </p>
 
-                            <!-- Weight Adjustment -->
-                            <div class="mt-2 flex items-center gap-2">
+                            <!-- Weight Adjustment Controls -->
+                            <div class="mt-2 flex items-center gap-2 pt-1">
+                                <div class="flex items-center rounded-lg border border-stone-200 bg-stone-50 p-0.5">
+                                    <button
+                                        type="button"
+                                        @click="
+                                            updateWeight(
+                                                item.id,
+                                                Number(item.weight_kg),
+                                                -0.5,
+                                            )
+                                        "
+                                        :disabled="Number(item.weight_kg) <= 0.25"
+                                        class="h-6 w-6 cursor-pointer rounded bg-white text-xs font-bold text-stone-700 shadow-2xs hover:bg-stone-100 disabled:opacity-40"
+                                    >
+                                        -
+                                    </button>
+                                    <span class="px-2.5 text-xs font-bold text-stone-800">
+                                        {{ Number(item.weight_kg).toFixed(2) }} kg
+                                    </span>
+                                    <button
+                                        type="button"
+                                        @click="
+                                            updateWeight(
+                                                item.id,
+                                                Number(item.weight_kg),
+                                                0.5,
+                                            )
+                                        "
+                                        class="h-6 w-6 cursor-pointer rounded bg-white text-xs font-bold text-stone-700 shadow-2xs hover:bg-stone-100"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+
                                 <button
                                     type="button"
-                                    @click="
-                                        updateWeight(
-                                            item.id,
-                                            Number(item.weight_kg),
-                                            -0.5,
-                                        )
-                                    "
-                                    class="h-6 w-6 rounded border border-neutral-300 text-xs font-bold hover:bg-neutral-100"
+                                    @click="removeItem(item.id)"
+                                    class="cursor-pointer text-stone-400 hover:text-rose-600 transition p-1"
+                                    title="Remove item"
                                 >
-                                    -
-                                </button>
-                                <span class="text-xs font-semibold"
-                                    >{{
-                                        Number(item.weight_kg).toFixed(2)
-                                    }}
-                                    kg</span
-                                >
-                                <button
-                                    type="button"
-                                    @click="
-                                        updateWeight(
-                                            item.id,
-                                            Number(item.weight_kg),
-                                            0.5,
-                                        )
-                                    "
-                                    class="h-6 w-6 rounded border border-neutral-300 text-xs font-bold hover:bg-neutral-100"
-                                >
-                                    +
+                                    <Trash2 class="h-4 w-4" />
                                 </button>
                             </div>
                         </div>
 
                         <div class="text-right">
-                            <p class="text-sm font-bold text-neutral-900">
+                            <p class="text-sm font-black text-stone-900">
                                 ₱{{
                                     (
                                         Number(item.weight_kg) *
-                                        Number(item.product.price_per_kg)
+                                        Number(item.product?.price_per_kg || 0)
                                     ).toFixed(2)
                                 }}
                             </p>
-                            <button
-                                type="button"
-                                @click="removeItem(item.id)"
-                                class="mt-2 cursor-pointer text-xs text-red-500 underline hover:text-red-700"
-                            >
-                                Remove
-                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Footer Summary -->
                 <div
-                    class="space-y-3 border-t border-neutral-200 bg-neutral-50 px-6 py-4"
+                    class="space-y-3.5 border-t border-stone-200 bg-stone-50 px-6 py-5"
                 >
-                    <div
-                        class="flex justify-between text-base font-bold text-neutral-900"
-                    >
-                        <span>Estimated Subtotal</span>
-                        <span>₱{{ subtotal.toFixed(2) }}</span>
+                    <div class="space-y-1">
+                        <div
+                            class="flex justify-between text-base font-black text-stone-900"
+                        >
+                            <span>Estimated Subtotal</span>
+                            <span class="text-rose-700">₱{{ Number(subtotal).toFixed(2) }}</span>
+                        </div>
+                        <p class="text-[11px] text-stone-500">
+                            Packed with frozen gel pads. Exact weight certified at butcher station.
+                        </p>
                     </div>
-                    <p class="text-xs text-neutral-500">
-                        Final weight may vary slightly depending on exact cut.
-                    </p>
+
                     <button
                         type="button"
                         @click="proceedToCheckout"
                         :disabled="!cart || cart.items.length === 0"
-                        class="w-full rounded-xl bg-rose-600 py-3 text-sm font-bold text-white shadow-xs transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-50"
+                        class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-rose-700 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-rose-800 disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-400 active:scale-[0.99]"
                     >
-                        Proceed to Checkout
+                        <span>Proceed to Checkout</span>
+                        <ArrowRight class="h-4 w-4" />
                     </button>
                 </div>
             </div>

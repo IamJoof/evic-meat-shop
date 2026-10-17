@@ -220,6 +220,7 @@ function handleSearch() {
                         v-for="product in products.data"
                         :key="product.id"
                         :product="product"
+                        @added="isCartOpen = true"
                     />
                 </div>
             </section>

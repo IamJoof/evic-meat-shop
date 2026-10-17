@@ -61,10 +61,15 @@ class CartService
         $cartId = $request->session()->get('cart_id');
         $cart = $cartId ? Cart::find($cartId) : null;
 
+        if (! $cart && $sessionId) {
+            $cart = Cart::where('session_id', $sessionId)->first();
+        }
+
         if (! $cart) {
             $cart = Cart::create(['session_id' => $sessionId]);
-            $request->session()->put('cart_id', $cart->id);
         }
+
+        $request->session()->put('cart_id', $cart->id);
 
         return $cart;
     }

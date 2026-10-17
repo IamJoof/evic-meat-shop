@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class StorefrontController extends Controller
 {
+    public function __construct(
+        protected CartService $cartService
+    ) {}
+
     public function index(Request $request): Response
     {
         $categorySlug = $request->query('category');
@@ -36,11 +41,17 @@ class StorefrontController extends Controller
         $products = $query->paginate(12)->withQueryString();
         $categories = Category::withCount('products')->get();
 
+        $cart = $this->cartService->getCartFromRequest($request);
+        $cart->load(['items.product.images']);
+        $subtotal = $this->cartService->calculateSubtotal($cart);
+
         return Inertia::render('Storefront/Index', [
             'products' => $products,
             'categories' => $categories,
             'currentCategory' => $categorySlug,
             'search' => $search,
+            'cart' => $cart,
+            'subtotal' => $subtotal,
         ]);
     }
 }
