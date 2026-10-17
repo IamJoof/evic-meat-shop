@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->decimal('price_per_kg', 8, 2);
             $table->boolean('is_available')->default(true);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**
