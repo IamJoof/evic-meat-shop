@@ -12,13 +12,15 @@ interface Product {
 
 interface Props {
     products?: Product[];
-    categories?: { name: string, products: Product[] }[];
+    categories?: { name: string; products: Product[] }[];
 }
 
 const props = defineProps<Props>();
 
 // If categories are not provided, group products into a default category to maintain layout
-const displayCategories = props.categories ?? [{ name: 'All Products', products: props.products ?? [] }];
+const displayCategories = props.categories ?? [
+    { name: 'All Products', products: props.products ?? [] },
+];
 </script>
 
 <template>
@@ -28,14 +30,21 @@ const displayCategories = props.categories ?? [{ name: 'All Products', products:
         <div class="fresh-cuts-container">
             <h1 class="page-title">Fresh Cuts</h1>
 
-            <div v-for="category in displayCategories" :key="category.name" class="category-section">
+            <div
+                v-for="category in displayCategories"
+                :key="category.name"
+                class="category-section"
+            >
                 <!-- Category Heading -->
                 <h2 class="category-title">{{ category.name }}</h2>
 
                 <!-- Grid of Products for this Category -->
                 <div class="product-grid">
-                    <div v-for="product in category.products" :key="product.id" class="product-card">
-                        
+                    <div
+                        v-for="product in category.products"
+                        :key="product.id"
+                        class="product-card"
+                    >
                         <!-- Product Image (Add your img tag here later) -->
                         <div class="product-image-placeholder">
                             Image Placeholder
@@ -43,16 +52,15 @@ const displayCategories = props.categories ?? [{ name: 'All Products', products:
 
                         <div class="product-details">
                             <h3 class="product-name">{{ product.name }}</h3>
-                            
+
                             <p class="product-price">
-                                ₱{{ Number(product.price_per_kg).toFixed(2) }} 
+                                ₱{{ Number(product.price_per_kg).toFixed(2) }}
                                 <span class="price-unit">/ kg</span>
                             </p>
-                            
+
                             <!-- Optional call to action -->
                             <button class="btn-add-cart">Add to Cart</button>
                         </div>
-                        
                     </div>
                 </div>
             </div>

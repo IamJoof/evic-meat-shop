@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
-import ProductCard from '@/components/Storefront/ProductCard.vue';
+import { ref } from 'vue';
 import CartDrawer from '@/components/Storefront/CartDrawer.vue';
+import ProductCard from '@/components/Storefront/ProductCard.vue';
 
 interface Category {
     id: number;
@@ -54,7 +54,7 @@ function filterCategory(slug: string | null) {
             category: slug || undefined,
             search: searchQuery.value || undefined,
         },
-        { preserveState: true }
+        { preserveState: true },
     );
 }
 
@@ -65,7 +65,7 @@ function handleSearch() {
             category: props.currentCategory || undefined,
             search: searchQuery.value || undefined,
         },
-        { preserveState: true }
+        { preserveState: true },
     );
 }
 </script>
@@ -75,21 +75,36 @@ function handleSearch() {
         <Head title="Fresh Meat & Poultry Catalog - Evic Meat Shop" />
 
         <!-- Navigation Bar -->
-        <header class="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-xs">
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <header
+            class="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-xs"
+        >
+            <div
+                class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8"
+            >
                 <div class="flex items-center gap-3">
-                    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-600 font-black text-white text-lg">
+                    <span
+                        class="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-600 text-lg font-black text-white"
+                    >
                         E
                     </span>
                     <div>
-                        <h1 class="text-lg font-black tracking-tight text-neutral-900">Evic Meat & Poultry</h1>
-                        <p class="text-xs text-neutral-500 font-medium">Butchered Fresh Daily</p>
+                        <h1
+                            class="text-lg font-black tracking-tight text-neutral-900"
+                        >
+                            Evic Meat & Poultry
+                        </h1>
+                        <p class="text-xs font-medium text-neutral-500">
+                            Butchered Fresh Daily
+                        </p>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-4">
                     <!-- Search bar -->
-                    <form @submit.prevent="handleSearch" class="hidden sm:block">
+                    <form
+                        @submit.prevent="handleSearch"
+                        class="hidden sm:block"
+                    >
                         <input
                             v-model="searchQuery"
                             type="text"
@@ -102,7 +117,7 @@ function handleSearch() {
                     <button
                         type="button"
                         @click="isCartOpen = true"
-                        class="flex items-center gap-2 rounded-xl bg-neutral-900 px-4 py-2 text-xs font-bold text-white shadow-xs transition hover:bg-neutral-800 cursor-pointer"
+                        class="flex cursor-pointer items-center gap-2 rounded-xl bg-neutral-900 px-4 py-2 text-xs font-bold text-white shadow-xs transition hover:bg-neutral-800"
                     >
                         <span>Cart</span>
                         <span
@@ -117,13 +132,17 @@ function handleSearch() {
 
             <!-- Categories Tabs -->
             <div class="border-t border-neutral-100 bg-white">
-                <nav class="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-2 sm:px-6 lg:px-8">
+                <nav
+                    class="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-2 sm:px-6 lg:px-8"
+                >
                     <button
                         type="button"
                         @click="filterCategory(null)"
                         :class="[
-                            'rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition cursor-pointer',
-                            !currentCategory ? 'bg-rose-600 text-white' : 'text-neutral-600 hover:bg-neutral-100'
+                            'cursor-pointer rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition',
+                            !currentCategory
+                                ? 'bg-rose-600 text-white'
+                                : 'text-neutral-600 hover:bg-neutral-100',
                         ]"
                     >
                         All Cuts
@@ -134,8 +153,10 @@ function handleSearch() {
                         type="button"
                         @click="filterCategory(cat.slug)"
                         :class="[
-                            'rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition cursor-pointer',
-                            currentCategory === cat.slug ? 'bg-rose-600 text-white' : 'text-neutral-600 hover:bg-neutral-100'
+                            'cursor-pointer rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition',
+                            currentCategory === cat.slug
+                                ? 'bg-rose-600 text-white'
+                                : 'text-neutral-600 hover:bg-neutral-100',
                         ]"
                     >
                         {{ cat.name }} ({{ cat.products_count ?? 0 }})
@@ -147,7 +168,9 @@ function handleSearch() {
         <!-- Main Product Grid -->
         <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
             <div v-if="products.data.length === 0" class="py-16 text-center">
-                <p class="text-base font-medium text-neutral-600">No meat products found matching your filter.</p>
+                <p class="text-base font-medium text-neutral-600">
+                    No meat products found matching your filter.
+                </p>
                 <button
                     type="button"
                     @click="filterCategory(null)"
@@ -157,7 +180,10 @@ function handleSearch() {
                 </button>
             </div>
 
-            <div v-else class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div
+                v-else
+                class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            >
                 <ProductCard
                     v-for="product in products.data"
                     :key="product.id"

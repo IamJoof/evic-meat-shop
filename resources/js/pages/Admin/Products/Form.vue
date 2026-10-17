@@ -40,40 +40,72 @@ function submitForm() {
 </script>
 
 <template>
-    <div class="min-h-screen bg-neutral-100 text-neutral-900 pb-16">
-        <Head :title="isEditing ? `Edit ${product?.name} - Admin` : 'Add New Meat Cut - Admin'" />
+    <div class="min-h-screen bg-neutral-100 pb-16 text-neutral-900">
+        <Head
+            :title="
+                isEditing
+                    ? `Edit ${product?.name} - Admin`
+                    : 'Add New Meat Cut - Admin'
+            "
+        />
 
         <header class="border-b border-neutral-200 bg-white py-4 shadow-xs">
-            <div class="mx-auto flex max-w-2xl items-center justify-between px-4 sm:px-6">
-                <a href="/admin/products" class="text-xs font-bold text-neutral-600 hover:text-rose-600">
+            <div
+                class="mx-auto flex max-w-2xl items-center justify-between px-4 sm:px-6"
+            >
+                <a
+                    href="/admin/products"
+                    class="text-xs font-bold text-neutral-600 hover:text-rose-600"
+                >
                     ← Back to Meat Catalog
                 </a>
-                <span class="text-xs font-bold text-rose-600 uppercase">{{ isEditing ? 'Edit Product' : 'New Cut' }}</span>
+                <span class="text-xs font-bold text-rose-600 uppercase">{{
+                    isEditing ? 'Edit Product' : 'New Cut'
+                }}</span>
             </div>
         </header>
 
         <main class="mx-auto mt-6 max-w-2xl px-4 sm:px-6">
-            <form @submit.prevent="submitForm" class="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-xs space-y-5">
+            <form
+                @submit.prevent="submitForm"
+                class="space-y-5 rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs sm:p-8"
+            >
                 <h1 class="text-lg font-black text-neutral-900">
-                    {{ isEditing ? `Edit Cut: ${product?.name}` : 'Add New Fresh Meat Cut' }}
+                    {{
+                        isEditing
+                            ? `Edit Cut: ${product?.name}`
+                            : 'Add New Fresh Meat Cut'
+                    }}
                 </h1>
 
                 <div>
-                    <label class="block text-xs font-semibold text-neutral-700">Category</label>
+                    <label class="block text-xs font-semibold text-neutral-700"
+                        >Category</label
+                    >
                     <select
                         v-model="form.category_id"
                         required
                         class="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm outline-hidden focus:border-rose-500"
                     >
-                        <option v-for="cat in categories" :key="cat.id" :value="cat.id">
+                        <option
+                            v-for="cat in categories"
+                            :key="cat.id"
+                            :value="cat.id"
+                        >
                             {{ cat.name }}
                         </option>
                     </select>
-                    <span v-if="form.errors.category_id" class="text-xs text-red-600">{{ form.errors.category_id }}</span>
+                    <span
+                        v-if="form.errors.category_id"
+                        class="text-xs text-red-600"
+                        >{{ form.errors.category_id }}</span
+                    >
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-neutral-700">Cut Name</label>
+                    <label class="block text-xs font-semibold text-neutral-700"
+                        >Cut Name</label
+                    >
                     <input
                         v-model="form.name"
                         type="text"
@@ -81,11 +113,17 @@ function submitForm() {
                         placeholder="e.g. Pork Liempo / Belly"
                         class="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm outline-hidden focus:border-rose-500"
                     />
-                    <span v-if="form.errors.name" class="text-xs text-red-600">{{ form.errors.name }}</span>
+                    <span
+                        v-if="form.errors.name"
+                        class="text-xs text-red-600"
+                        >{{ form.errors.name }}</span
+                    >
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-neutral-700">Price per Kilogram (₱)</label>
+                    <label class="block text-xs font-semibold text-neutral-700"
+                        >Price per Kilogram (₱)</label
+                    >
                     <input
                         v-model="form.price_per_kg"
                         type="number"
@@ -95,11 +133,17 @@ function submitForm() {
                         placeholder="e.g. 380.00"
                         class="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm outline-hidden focus:border-rose-500"
                     />
-                    <span v-if="form.errors.price_per_kg" class="text-xs text-red-600">{{ form.errors.price_per_kg }}</span>
+                    <span
+                        v-if="form.errors.price_per_kg"
+                        class="text-xs text-red-600"
+                        >{{ form.errors.price_per_kg }}</span
+                    >
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-neutral-700">Description / Butchery Note</label>
+                    <label class="block text-xs font-semibold text-neutral-700"
+                        >Description / Butchery Note</label
+                    >
                     <textarea
                         v-model="form.description"
                         rows="3"
@@ -115,12 +159,17 @@ function submitForm() {
                         v-model="form.is_available"
                         class="h-4 w-4 rounded text-rose-600 focus:ring-rose-500"
                     />
-                    <label for="is_available" class="text-xs font-semibold text-neutral-700 cursor-pointer">
+                    <label
+                        for="is_available"
+                        class="cursor-pointer text-xs font-semibold text-neutral-700"
+                    >
                         Currently in stock & available today
                     </label>
                 </div>
 
-                <div class="pt-4 border-t border-neutral-100 flex justify-end gap-3">
+                <div
+                    class="flex justify-end gap-3 border-t border-neutral-100 pt-4"
+                >
                     <a
                         href="/admin/products"
                         class="rounded-xl border border-neutral-300 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-50"
@@ -130,9 +179,15 @@ function submitForm() {
                     <button
                         type="submit"
                         :disabled="form.processing"
-                        class="rounded-xl bg-rose-600 px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-rose-700 disabled:opacity-50 cursor-pointer"
+                        class="cursor-pointer rounded-xl bg-rose-600 px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-rose-700 disabled:opacity-50"
                     >
-                        {{ form.processing ? 'Saving...' : (isEditing ? 'Update Cut' : 'Create Cut') }}
+                        {{
+                            form.processing
+                                ? 'Saving...'
+                                : isEditing
+                                  ? 'Update Cut'
+                                  : 'Create Cut'
+                        }}
                     </button>
                 </div>
             </form>

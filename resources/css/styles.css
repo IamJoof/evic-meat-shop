@@ -1,11 +1,11 @@
 :root {
-    --color-primary: #C53030;
-    --color-primary-hover: #9B2C2C;
-    --color-bg: #F9FAFB;
-    --color-card-bg: #FFFFFF;
-    --color-text-main: #1F2937;
-    --color-text-muted: #6B7280;
-    --color-border: #E5E7EB;
+    --color-primary: #c53030;
+    --color-primary-hover: #9b2c2c;
+    --color-bg: #f9fafb;
+    --color-card-bg: #ffffff;
+    --color-text-main: #1f2937;
+    --color-text-muted: #6b7280;
+    --color-border: #e5e7eb;
 }
 
 /* Base Styles */
@@ -18,7 +18,10 @@ body {
 .fresh-cuts-wrapper {
     background-color: var(--color-bg);
     padding: 3rem 1rem;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family:
+        system-ui,
+        -apple-system,
+        sans-serif;
     color: var(--color-text-main);
     min-height: 100vh;
 }
@@ -47,10 +50,18 @@ body {
 }
 
 /* Stagger animations for category sections */
-.category-section:nth-child(1) { animation-delay: 0.1s; }
-.category-section:nth-child(2) { animation-delay: 0.3s; }
-.category-section:nth-child(3) { animation-delay: 0.5s; }
-.category-section:nth-child(4) { animation-delay: 0.7s; }
+.category-section:nth-child(1) {
+    animation-delay: 0.1s;
+}
+.category-section:nth-child(2) {
+    animation-delay: 0.3s;
+}
+.category-section:nth-child(3) {
+    animation-delay: 0.5s;
+}
+.category-section:nth-child(4) {
+    animation-delay: 0.7s;
+}
 
 .category-title {
     font-size: 1.75rem;
@@ -95,7 +106,9 @@ body {
 
 .product-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
     border-color: #fca5a5;
 }
 
@@ -114,13 +127,18 @@ body {
 
 /* Shimmer effect for placeholder */
 .product-image-placeholder::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: -150%;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
     transform: skewX(-25deg);
     animation: shimmer 3s infinite;
 }
@@ -185,8 +203,12 @@ body {
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideDown {
@@ -212,7 +234,13 @@ body {
 }
 
 @keyframes shimmer {
-    0% { left: -150%; }
-    50% { left: 150%; }
-    100% { left: 150%; }
+    0% {
+        left: -150%;
+    }
+    50% {
+        left: 150%;
+    }
+    100% {
+        left: 150%;
+    }
 }

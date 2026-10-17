@@ -13,7 +13,7 @@ const props = withDefaults(
         step: 0.5,
         min: 0.25,
         max: 50.0,
-    }
+    },
 );
 
 const emit = defineEmits<{
@@ -25,13 +25,17 @@ const calculatedPrice = computed(() => {
 });
 
 function adjustWeight(delta: number) {
-    const next = Math.max(props.min, Math.min(props.max, Math.round((props.modelValue + delta) * 100) / 100));
+    const next = Math.max(
+        props.min,
+        Math.min(props.max, Math.round((props.modelValue + delta) * 100) / 100),
+    );
     emit('update:modelValue', next);
 }
 
 function onInput(e: Event) {
     const target = e.target as HTMLInputElement;
     const val = parseFloat(target.value);
+
     if (!isNaN(val) && val >= props.min && val <= props.max) {
         emit('update:modelValue', Math.round(val * 100) / 100);
     }
@@ -40,11 +44,17 @@ function onInput(e: Event) {
 
 <template>
     <div class="space-y-2">
-        <div class="flex items-center justify-between text-xs text-neutral-500 font-medium">
+        <div
+            class="flex items-center justify-between text-xs font-medium text-neutral-500"
+        >
             <span>Select Weight (kg)</span>
-            <span class="text-emerald-700 font-semibold">Est. ₱{{ calculatedPrice.toFixed(2) }}</span>
+            <span class="font-semibold text-emerald-700"
+                >Est. ₱{{ calculatedPrice.toFixed(2) }}</span
+            >
         </div>
-        <div class="flex items-center rounded-lg border border-neutral-300 bg-white p-1 shadow-xs">
+        <div
+            class="flex items-center rounded-lg border border-neutral-300 bg-white p-1 shadow-xs"
+        >
             <button
                 type="button"
                 @click="adjustWeight(-step)"
@@ -84,7 +94,7 @@ function onInput(e: Event) {
                     'rounded-md px-2 py-0.5 text-xs font-medium transition',
                     modelValue === preset
                         ? 'bg-rose-600 text-white'
-                        : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                        : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
                 ]"
             >
                 {{ preset }} kg

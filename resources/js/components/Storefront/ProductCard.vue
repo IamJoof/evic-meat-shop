@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import WeightSelector from '@/components/Storefront/WeightSelector.vue';
 
 interface Product {
@@ -29,7 +29,9 @@ const isSubmitting = ref<boolean>(false);
 const showNotesInput = ref<boolean>(false);
 
 function addToCart() {
-    if (!props.product.is_available) return;
+    if (!props.product.is_available) {
+        return;
+    }
 
     isSubmitting.value = true;
     router.post(
@@ -46,7 +48,7 @@ function addToCart() {
                 cuttingNotes.value = '';
                 showNotesInput.value = false;
             },
-        }
+        },
     );
 }
 </script>
@@ -58,15 +60,17 @@ function addToCart() {
         <div>
             <!-- Header Badges -->
             <div class="flex items-center justify-between text-xs">
-                <span class="font-medium text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full">
+                <span
+                    class="rounded-full bg-rose-50 px-2 py-0.5 font-medium text-rose-700"
+                >
                     {{ product.category?.name || 'Fresh Meat' }}
                 </span>
                 <span
                     :class="[
-                        'rounded-full px-2 py-0.5 font-semibold text-xs',
+                        'rounded-full px-2 py-0.5 text-xs font-semibold',
                         product.is_available
                             ? 'bg-emerald-50 text-emerald-700'
-                            : 'bg-neutral-100 text-neutral-500'
+                            : 'bg-neutral-100 text-neutral-500',
                     ]"
                 >
                     {{ product.is_available ? 'In Stock' : 'Sold Out Today' }}
@@ -75,12 +79,19 @@ function addToCart() {
 
             <!-- Title & Price -->
             <div class="mt-4">
-                <h3 class="text-lg font-bold text-neutral-900">{{ product.name }}</h3>
+                <h3 class="text-lg font-bold text-neutral-900">
+                    {{ product.name }}
+                </h3>
                 <p class="mt-1 text-xl font-extrabold text-neutral-900">
                     ₱{{ Number(product.price_per_kg).toFixed(2) }}
-                    <span class="text-xs font-normal text-neutral-500">/ kg</span>
+                    <span class="text-xs font-normal text-neutral-500"
+                        >/ kg</span
+                    >
                 </p>
-                <p v-if="product.description" class="mt-1.5 text-xs text-neutral-500 line-clamp-2">
+                <p
+                    v-if="product.description"
+                    class="mt-1.5 line-clamp-2 text-xs text-neutral-500"
+                >
                     {{ product.description }}
                 </p>
             </div>
@@ -99,9 +110,13 @@ function addToCart() {
                     <button
                         type="button"
                         @click="showNotesInput = !showNotesInput"
-                        class="text-xs font-medium text-rose-600 hover:text-rose-700 underline cursor-pointer"
+                        class="cursor-pointer text-xs font-medium text-rose-600 underline hover:text-rose-700"
                     >
-                        {{ showNotesInput ? '- Hide cut instructions' : '+ Add custom cut/prep note' }}
+                        {{
+                            showNotesInput
+                                ? '- Hide cut instructions'
+                                : '+ Add custom cut/prep note'
+                        }}
                     </button>
                     <input
                         v-if="showNotesInput"

@@ -26,28 +26,46 @@ defineProps<{
 }>();
 
 function toggleAvailability(productId: number) {
-    router.patch(`/admin/products/${productId}/toggle-availability`, {}, { preserveScroll: true });
+    router.patch(
+        `/admin/products/${productId}/toggle-availability`,
+        {},
+        { preserveScroll: true },
+    );
 }
 
 function deleteProduct(productId: number) {
-    if (confirm('Are you sure you want to remove this product from the catalog?')) {
+    if (
+        confirm(
+            'Are you sure you want to remove this product from the catalog?',
+        )
+    ) {
         router.delete(`/admin/products/${productId}`);
     }
 }
 </script>
 
 <template>
-    <div class="min-h-screen bg-neutral-100 text-neutral-900 pb-16">
+    <div class="min-h-screen bg-neutral-100 pb-16 text-neutral-900">
         <Head title="Meat Products Catalog - Admin" />
 
         <header class="border-b border-neutral-200 bg-white py-4 shadow-xs">
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div
+                class="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+            >
                 <div class="flex items-center gap-4">
-                    <span class="rounded-lg bg-rose-600 px-2.5 py-1 text-xs font-black text-white">ADMIN</span>
-                    <h1 class="text-xl font-black text-neutral-900">Meat Catalog Management</h1>
+                    <span
+                        class="rounded-lg bg-rose-600 px-2.5 py-1 text-xs font-black text-white"
+                        >ADMIN</span
+                    >
+                    <h1 class="text-xl font-black text-neutral-900">
+                        Meat Catalog Management
+                    </h1>
                 </div>
                 <div class="flex items-center gap-3">
-                    <a href="/admin/orders" class="text-xs font-bold text-neutral-600 hover:text-rose-600">
+                    <a
+                        href="/admin/orders"
+                        class="text-xs font-bold text-neutral-600 hover:text-rose-600"
+                    >
                         Orders Board
                     </a>
                     <a
@@ -61,9 +79,13 @@ function deleteProduct(productId: number) {
         </header>
 
         <main class="mx-auto mt-6 max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xs">
+            <div
+                class="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xs"
+            >
                 <table class="w-full text-left text-xs">
-                    <thead class="border-b border-neutral-200 bg-neutral-50 text-neutral-500 uppercase font-semibold">
+                    <thead
+                        class="border-b border-neutral-200 bg-neutral-50 font-semibold text-neutral-500 uppercase"
+                    >
                         <tr>
                             <th class="px-5 py-3.5">Cut Name</th>
                             <th class="px-5 py-3.5">Category</th>
@@ -74,24 +96,36 @@ function deleteProduct(productId: number) {
                     </thead>
                     <tbody class="divide-y divide-neutral-100">
                         <tr v-if="products.data.length === 0">
-                            <td colspan="5" class="py-12 text-center text-neutral-500">
-                                No products in catalog. Click "+ Add New Meat Cut" to create one.
+                            <td
+                                colspan="5"
+                                class="py-12 text-center text-neutral-500"
+                            >
+                                No products in catalog. Click "+ Add New Meat
+                                Cut" to create one.
                             </td>
                         </tr>
                         <tr
                             v-for="product in products.data"
                             :key="product.id"
-                            class="hover:bg-neutral-50 transition"
+                            class="transition hover:bg-neutral-50"
                         >
                             <td class="px-5 py-4 font-bold text-neutral-900">
                                 {{ product.name }}
-                                <p v-if="product.description" class="text-neutral-500 text-[11px] font-normal line-clamp-1">
+                                <p
+                                    v-if="product.description"
+                                    class="line-clamp-1 text-[11px] font-normal text-neutral-500"
+                                >
                                     {{ product.description }}
                                 </p>
                             </td>
                             <td class="px-5 py-4">
-                                <span class="rounded-full bg-neutral-100 px-2 py-0.5 font-semibold text-neutral-700">
-                                    {{ product.category?.name || 'Uncategorized' }}
+                                <span
+                                    class="rounded-full bg-neutral-100 px-2 py-0.5 font-semibold text-neutral-700"
+                                >
+                                    {{
+                                        product.category?.name ||
+                                        'Uncategorized'
+                                    }}
                                 </span>
                             </td>
                             <td class="px-5 py-4 font-bold text-neutral-900">
@@ -102,16 +136,20 @@ function deleteProduct(productId: number) {
                                     type="button"
                                     @click="toggleAvailability(product.id)"
                                     :class="[
-                                        'rounded-full px-2.5 py-1 text-[11px] font-bold cursor-pointer transition',
+                                        'cursor-pointer rounded-full px-2.5 py-1 text-[11px] font-bold transition',
                                         product.is_available
                                             ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                                            : 'bg-neutral-200 text-neutral-600 hover:bg-neutral-300'
+                                            : 'bg-neutral-200 text-neutral-600 hover:bg-neutral-300',
                                     ]"
                                 >
-                                    {{ product.is_available ? 'In Stock (Click to Disable)' : 'Sold Out (Click to Enable)' }}
+                                    {{
+                                        product.is_available
+                                            ? 'In Stock (Click to Disable)'
+                                            : 'Sold Out (Click to Enable)'
+                                    }}
                                 </button>
                             </td>
-                            <td class="px-5 py-4 text-right space-x-2">
+                            <td class="space-x-2 px-5 py-4 text-right">
                                 <a
                                     :href="`/admin/products/${product.id}/edit`"
                                     class="font-semibold text-neutral-700 hover:text-rose-600"
@@ -121,7 +159,7 @@ function deleteProduct(productId: number) {
                                 <button
                                     type="button"
                                     @click="deleteProduct(product.id)"
-                                    class="font-semibold text-red-600 hover:text-red-800 cursor-pointer"
+                                    class="cursor-pointer font-semibold text-red-600 hover:text-red-800"
                                 >
                                     Delete
                                 </button>
