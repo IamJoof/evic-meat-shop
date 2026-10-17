@@ -28,5 +28,7 @@ yarn-error.log
 /.vscode
 /.zed
 /.superpowers
+/.agents
+/.ai
 /database/*.sqlite
 
