@@ -4,7 +4,6 @@ use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\SupportConversation;
-use App\Models\User;
 
 test('customers can retrieve storefront faqs', function () {
     $response = $this->getJson(route('support.faqs'));
@@ -58,6 +57,11 @@ test('customer can fetch active conversation by session or token', function () {
         ->assertJsonPath('conversation.id', $conversation->id)
         ->assertJsonPath('conversation.customer_name', 'Pedro Penduko')
         ->assertJsonCount(1, 'conversation.messages');
+
+    // Fetch via support_token alias (from email links)
+    $emailLinkResponse = $this->getJson(route('support.conversation', ['support_token' => $conversation->access_token]));
+    $emailLinkResponse->assertOk()
+        ->assertJsonPath('conversation.id', $conversation->id);
 });
 
 test('guest can lookup order status using order reference and email', function () {

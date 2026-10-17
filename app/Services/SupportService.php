@@ -44,7 +44,7 @@ class SupportService
 
     public function getActiveConversation(Request $request): ?SupportConversation
     {
-        $token = $request->query('token');
+        $token = $request->query('token') ?? $request->query('support_token');
         if ($token) {
             $conversation = SupportConversation::with(['messages.user'])->where('access_token', $token)->first();
             if ($conversation) {
@@ -70,7 +70,10 @@ class SupportService
         if ($conversationId) {
             $conversation = SupportConversation::with(['messages.user'])->find($conversationId);
             if ($conversation) {
-                return $conversation;
+                // Prevent session bleed if user is logged in but conversation belongs to another user
+                if (! $user || ! $conversation->user_id || $conversation->user_id === $user->id) {
+                    return $conversation;
+                }
             }
         }
 
@@ -86,7 +89,7 @@ class SupportService
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function sendMessage(Request $request, array $data): array
     {

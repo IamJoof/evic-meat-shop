@@ -2,6 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { ShieldCheck, Truck, Store, CreditCard, Banknote, Sparkles } from 'lucide-vue-next';
+import CustomerSupportChat from '@/components/Storefront/CustomerSupportChat.vue';
 
 interface CartItem {
     id: number;
@@ -407,5 +408,8 @@ function submitOrder() {
                 </div>
             </div>
         </main>
+
+        <!-- Floating Customer Support Chat & FAQ -->
+        <CustomerSupportChat />
     </div>
 </template>

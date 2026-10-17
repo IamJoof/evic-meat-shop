@@ -2,6 +2,7 @@
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { ShieldCheck, Snowflake, UserPlus, CheckCircle, PackageCheck, AlertCircle } from 'lucide-vue-next';
+import CustomerSupportChat from '@/components/Storefront/CustomerSupportChat.vue';
 
 interface OrderItem {
     id: number;
@@ -312,5 +313,8 @@ function cancelOrder() {
                 </div>
             </div>
         </main>
+
+        <!-- Live Customer Support Drawer -->
+        <CustomerSupportChat />
     </div>
 </template>
