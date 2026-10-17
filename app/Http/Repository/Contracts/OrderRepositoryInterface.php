@@ -2,8 +2,8 @@
 
 namespace App\Http\Repository\Contracts;
 
-interface OrderRepositoryInterface {
-
+interface OrderRepositoryInterface
+{
     public function getAllOrders();
 
     public function createOrder();

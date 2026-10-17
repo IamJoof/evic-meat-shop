@@ -8,9 +8,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
-Route::prefix('/product')->group(function(){
-    Route::get('/{id}/{filter?}', [ProductController::class,'index']);
-    Route::post('/',[ProductController::class,'store']);
-    Route::put('/{id}', [ProductController::class,'update']);
+Route::prefix('/product')->group(function () {
+    Route::get('/{id}/{filter?}', [ProductController::class, 'index']);
+    Route::post('/', [ProductController::class, 'store']);
+    Route::put('/{id}', [ProductController::class, 'update']);
 });

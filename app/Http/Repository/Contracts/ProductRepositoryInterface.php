@@ -2,12 +2,11 @@
 
 namespace App\Http\Repository\Contracts;
 
-interface ProductRepositoryInterface {
+interface ProductRepositoryInterface
+{
+    public function getAllProducts(int $currentPage, string $filter);
 
-        public function getAllProducts(int $currentPage, string $filter);
+    public function storeProduct(array $data);
 
-        public function storeProduct(array $data);
-
-        public function updateProduct(int $id, array $data);
-
+    public function updateProduct(int $id, array $data);
 }

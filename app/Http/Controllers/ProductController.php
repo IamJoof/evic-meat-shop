@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Services\ProductService;
 
@@ -15,8 +14,9 @@ class ProductController extends Controller
     public function index($currentPage, string $filter = 'all')
     {
         $products = $this->productService->getAllProduct($currentPage, $filter);
+
         return response()->json([
-            'data' => $products
+            'data' => $products,
         ], 200);
     }
 
@@ -24,9 +24,10 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
         $product = $this->productService->storeProduct($validated);
+
         return response()->json([
             'message' => 'Product Successfully created',
-            'data' => $product
+            'data' => $product,
         ], 201);
     }
 
@@ -34,14 +35,13 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
         $product = $this->productService->updateProduct($id, $validated);
-        if(!$product) {
+        if (! $product) {
             abort(404, 'Product Not Found');
         }
+
         return response()->json([
             'message' => 'Product updated successfully',
-            'data' => $product
+            'data' => $product,
         ]);
     }
-
-    
 }

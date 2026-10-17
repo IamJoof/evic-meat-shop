@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-
     public function getAllProducts(int $currentPage, string $filter = 'all', int $take = 10)
     {
 
@@ -41,17 +40,18 @@ class ProductRepository implements ProductRepositoryInterface
 
         return [
             'data' => DB::select($query, $bindings),
-            'total_pages' => $totalPages
+            'total_pages' => $totalPages,
         ];
     }
 
-    public function storeProduct(array $data) {
+    public function storeProduct(array $data)
+    {
         $data['created_at'] = now()->toDateTimeString();
         $data['updated_at'] = now()->toDateTimeString();
-        
+
         $columns = implode(', ', array_keys($data));
         $placeholders = implode(', ', array_fill(0, count($data), '?'));
-        
+
         $insertQuery = "INSERT INTO products ({$columns}) VALUES ({$placeholders})";
 
         DB::insert($insertQuery, array_values($data));
@@ -61,9 +61,10 @@ class ProductRepository implements ProductRepositoryInterface
         return $this->findSpecificProduct($newProductId);
     }
 
-    public function updateProduct(int $id ,array $data) {
+    public function updateProduct(int $id, array $data)
+    {
 
-        if(!empty($data)) {
+        if (! empty($data)) {
             $data['updated_at'] = now()->toDateTimeString();
 
             $setClauses = [];
@@ -86,8 +87,8 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * HELPERS
      */
-
-    private function findSpecificProduct(int $id) {
+    private function findSpecificProduct(int $id)
+    {
         $selectQuery = '
             SELECT
                 p.*,

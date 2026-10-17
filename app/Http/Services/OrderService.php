@@ -2,6 +2,4 @@
 
 namespace App\Http\Services;
 
-class OrderService {
-    
-}
+class OrderService {}

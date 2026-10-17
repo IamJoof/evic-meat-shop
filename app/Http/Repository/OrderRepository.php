@@ -2,13 +2,11 @@
 
 namespace App\Http\Repository;
 
-
 use App\Http\Repository\Contracts\OrderRepositoryInterface;
 
-class OrderRepository implements OrderRepositoryInterface {
-    public function getAllOrders() {
-         
-    }
+class OrderRepository implements OrderRepositoryInterface
+{
+    public function getAllOrders() {}
 
     public function createOrder() {}
 

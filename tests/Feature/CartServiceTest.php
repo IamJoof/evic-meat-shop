@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use App\Services\CartService;
 
@@ -54,4 +55,25 @@ test('cart controller manages items via http endpoints', function () {
         ->assertRedirect();
 
     expect($cart->fresh()->items)->toHaveCount(0);
+});
+
+test('cart controller prevents modifying or deleting items belonging to another cart', function () {
+    $otherCart = Cart::factory()->create();
+    $product = Product::factory()->create(['price_per_kg' => 250.00]);
+    $item = CartItem::factory()->create([
+        'cart_id' => $otherCart->id,
+        'product_id' => $product->id,
+        'weight_kg' => 1.0,
+    ]);
+
+    // Active session has a different cart
+    $activeCart = Cart::factory()->create();
+
+    $this->withSession(['cart_id' => $activeCart->id])
+        ->patch(route('cart.items.update', $item->id), ['weight_kg' => 2.0])
+        ->assertStatus(403);
+
+    $this->withSession(['cart_id' => $activeCart->id])
+        ->delete(route('cart.items.destroy', $item->id))
+        ->assertStatus(403);
 });

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Repository\CatalogRepository;
+use App\Http\Repository\Contracts\CatalogRepositoryInterface;
 use App\Http\Repository\Contracts\ProductRepositoryInterface;
 use App\Http\Repository\ProductRepository;
 use Carbon\CarbonImmutable;
@@ -9,8 +11,6 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use App\Http\Repository\CatalogRepository;
-use App\Http\Repository\Contracts\CatalogRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {

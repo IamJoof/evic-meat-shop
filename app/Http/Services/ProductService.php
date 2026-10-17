@@ -10,11 +10,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
-
     public function __construct(
         protected ProductRepositoryInterface $productRepo
-    ) {
-    }
+    ) {}
 
     public function getAllProduct(int $currentPage, string $filter)
     {
@@ -37,27 +35,30 @@ class ProductService
         }, $data);
     }
 
-    public function storeProduct(array $data){
-        
-        if(isset($data['image_path']) && $data['image_path'] instanceof UploadedFile) {
-            $data['image_path'] = $data['image_path']->store('products','public');
+    public function storeProduct(array $data)
+    {
+
+        if (isset($data['image_path']) && $data['image_path'] instanceof UploadedFile) {
+            $data['image_path'] = $data['image_path']->store('products', 'public');
         }
 
         $newProduct = $this->productRepo->storeProduct($data);
-            return new ProductResponseDTO(
-                name: $newProduct->name,
-                image_path: $newProduct->image_path ?? '',
-                price_per_kg: (float) $newProduct->price_per_kg,
-                is_available: (bool) $newProduct->is_available,
-                category_name: $newProduct->category_name,
-            );
+
+        return new ProductResponseDTO(
+            name: $newProduct->name,
+            image_path: $newProduct->image_path ?? '',
+            price_per_kg: (float) $newProduct->price_per_kg,
+            is_available: (bool) $newProduct->is_available,
+            category_name: $newProduct->category_name,
+        );
     }
 
-    public function updateProduct(int $id, array $data) {
-        if(isset($data['image_path']) && $data['image_path'] instanceof UploadedFile) {
+    public function updateProduct(int $id, array $data)
+    {
+        if (isset($data['image_path']) && $data['image_path'] instanceof UploadedFile) {
             $oldFile = Product::where('id', $id)->value('image_path');
 
-            if($oldFile && Storage::disk('public')->exists($oldFile)){
+            if ($oldFile && Storage::disk('public')->exists($oldFile)) {
                 Storage::disk('public')->delete($oldFile);
             }
             $data['image_path'] = $data['image_path']->store('products', 'public');
@@ -74,10 +75,11 @@ class ProductService
         );
     }
 
-    public function softDelete(int $id){
+    public function softDelete(int $id)
+    {
 
         $data = [
-            'deleted_at' => now()->toDateTimeString()
+            'deleted_at' => now()->toDateTimeString(),
         ];
 
         $item = $this->productRepo->updateProduct($id, $data);

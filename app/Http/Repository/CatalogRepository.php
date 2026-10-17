@@ -2,9 +2,8 @@
 
 namespace App\Http\Repository;
 
-use App\Models\Product;
 use App\Http\Repository\Contracts\CatalogRepositoryInterface;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 
 class CatalogRepository implements CatalogRepositoryInterface
 {

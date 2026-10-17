@@ -2,8 +2,8 @@
 
 namespace App\Http\DTO\Product;
 
-class ProductResponseDTO{
-    
+class ProductResponseDTO
+{
     public function __construct(
         public string $name,
         public string $image_path,
@@ -11,11 +11,10 @@ class ProductResponseDTO{
         public bool $is_available,
         public string $category_name,
 
-
-        // Optional Params 
-        public ?int $id             = null,
-        public ?int $current_page   = null,
-        public ?int $total_page     = null,
-        public ?string $filter      = null,
-    ){}
+        // Optional Params
+        public ?int $id = null,
+        public ?int $current_page = null,
+        public ?int $total_page = null,
+        public ?string $filter = null,
+    ) {}
 }

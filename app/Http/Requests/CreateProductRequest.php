@@ -30,19 +30,18 @@ class CreateProductRequest extends FormRequest
 
         ];
 
-
-        if($this->isMethod('put') || $this->isMethod('patch')){
-            return array_merge($rules,[
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            return array_merge($rules, [
                 'name' => 'sometimes|string|max:100',
                 'price_per_kg' => 'sometimes|numeric|min:0',
-                'category_id' => 'sometimes|integer|exists:categories,id'
+                'category_id' => 'sometimes|integer|exists:categories,id',
             ]);
         }
 
-        return array_merge($rules,[
+        return array_merge($rules, [
             'name' => 'required|string|max:100',
             'price_per_kg' => 'sometimes|numeric|min:0',
-            'category_id' => 'required|integer|exists:categories,id'
+            'category_id' => 'required|integer|exists:categories,id',
         ]);
     }
 }

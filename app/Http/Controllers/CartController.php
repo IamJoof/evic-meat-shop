@@ -48,6 +48,9 @@ class CartController extends Controller
 
     public function update(Request $request, CartItem $item): RedirectResponse
     {
+        $cart = $this->cartService->getCartFromRequest($request);
+        abort_if($item->cart_id !== $cart->id, 403, 'Unauthorized cart item access.');
+
         $validated = $request->validate([
             'weight_kg' => ['required', 'numeric', 'min:0.1', 'max:50'],
         ]);
@@ -57,8 +60,11 @@ class CartController extends Controller
         return back()->with('success', 'Cart item updated.');
     }
 
-    public function destroy(CartItem $item): RedirectResponse
+    public function destroy(Request $request, CartItem $item): RedirectResponse
     {
+        $cart = $this->cartService->getCartFromRequest($request);
+        abort_if($item->cart_id !== $cart->id, 403, 'Unauthorized cart item access.');
+
         $this->cartService->removeItem($item);
 
         return back()->with('success', 'Item removed from cart.');

@@ -91,3 +91,24 @@ test('checkout fails if expected delivery date is in the past', function () {
 
     $response->assertSessionHasErrors('expected_delivery_date');
 });
+
+test('checkout fails if expected delivery date is beyond 30 days', function () {
+    $cart = Cart::factory()->create();
+    $product = Product::factory()->create(['is_available' => true]);
+    CartItem::factory()->create([
+        'cart_id' => $cart->id,
+        'product_id' => $product->id,
+        'weight_kg' => 1.0,
+    ]);
+
+    $response = $this->withSession(['cart_id' => $cart->id])->post(route('checkout.store'), [
+        'customer_name' => 'Maria',
+        'customer_phone' => '09170000000',
+        'customer_address' => 'Address',
+        'fulfillment_type' => 'pickup',
+        'expected_delivery_date' => now()->addDays(35)->format('Y-m-d H:i:s'),
+        'payment_option' => 'COD',
+    ]);
+
+    $response->assertSessionHasErrors('expected_delivery_date');
+});

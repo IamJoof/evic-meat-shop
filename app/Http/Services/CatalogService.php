@@ -3,10 +3,10 @@
 namespace App\Http\Services;
 
 use App\Http\Repository\Contracts\CatalogRepositoryInterface;
+
 class CatalogService
 {
-    public function __construct
-    (
+    public function __construct(
         private CatalogRepositoryInterface $catalogRepository
     ) {}
 
