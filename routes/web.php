@@ -50,6 +50,9 @@ Route::middleware(['auth', EnsureUserIsAdmin::class])->prefix('admin')->name('ad
     Route::patch('/products/{product}/toggle-availability', [ProductController::class, 'toggleAvailability'])->name('products.toggle-availability');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
+    Route::get('/support', [\App\Http\Controllers\Admin\SupportController::class, 'index'])->name('support.index');
+    Route::post('/support/{conversation}/reply', [\App\Http\Controllers\Admin\SupportController::class, 'reply'])->name('support.reply');
+    Route::patch('/support/{conversation}/status', [\App\Http\Controllers\Admin\SupportController::class, 'updateStatus'])->name('support.status');
 });
 
 require __DIR__.'/settings.php';
