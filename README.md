@@ -18,6 +18,17 @@ Thank you for considering contributing to our starter kit! The contribution guid
 
 All contributions to the Starter Kits from now on should be made through [Maestro](https://github.com/laravel/maestro).
 
+## Agent & Superpower Workflows
+
+All AI agents working on this codebase must adhere to the **Superpower Skills** workflow for every task handed:
+
+1. **Discovery & Exploration:** Use `superpowers:brainstorming` before planning any new feature, UX workflow, or architectural change.
+2. **Implementation Planning:** Use `superpowers:writing-plans` to produce task-by-task, bite-sized TDD implementation plans in `docs/superpowers/plans/` before writing product code.
+3. **Execution:** Execute plans using `superpowers:subagent-driven-development` or `superpowers:executing-plans`, maintaining test-driven development (`superpowers:test-driven-development`).
+4. **Debugging:** Always apply `superpowers:systematic-debugging` upon encountering any failing test or bug before attempting fixes.
+5. **Verification & Completion:** Verify all test outputs programmatically via `superpowers:verification-before-completion` before declaring any task complete or committing code.
+6. **Code Reviews:** Request reviews via `superpowers:requesting-code-review` and handle feedback with `superpowers:receiving-code-review`.
+
 ## Code of Conduct
 
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
@@ -25,3 +36,4 @@ In order to ensure that the Laravel community is welcoming to all, please review
 ## License
 
 The Laravel + Vue starter kit is open-sourced software licensed under the MIT license.
+

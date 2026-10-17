@@ -183,4 +183,17 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 Vue components must have a single root element.
 - IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
+=== superpower-skills rules ===
+
+# Superpower Skills Workflow
+
+Agents working on this codebase MUST utilize the appropriate Superpower skill for every task:
+- **Ideation & Requirement Definition:** `superpowers:brainstorming`
+- **Implementation Planning:** `superpowers:writing-plans` (save plans to `docs/superpowers/plans/`)
+- **Execution:** `superpowers:subagent-driven-development` or `superpowers:executing-plans` with strict TDD (`superpowers:test-driven-development`)
+- **Debugging:** `superpowers:systematic-debugging`
+- **Verification:** `superpowers:verification-before-completion`
+- **Reviews:** `superpowers:requesting-code-review` and `superpowers:receiving-code-review`
+
 </laravel-boost-guidelines>
+
