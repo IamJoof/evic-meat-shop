@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Product>
@@ -17,17 +19,15 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->unique()->words(3, true);
+
         return [
-            // Generate a random meat-sounding name like "Juicy Flank Steak"
-            'name' => fake()->words(3, true), 
-            
-            // Random price between 150.00 and 1500.00
-            'price_per_kg' => fake()->randomFloat(2, 150, 1500), 
-            
-            // 85% chance the product is marked as available
-            'is_available' => fake()->boolean(85), 
-            
-            'image_path' => null, // Leave null for now until we handle file uploads
+            'category_id' => Category::factory(),
+            'name' => ucwords($name),
+            'slug' => Str::slug($name),
+            'price_per_kg' => fake()->randomFloat(2, 150, 850),
+            'is_available' => true,
+            'description' => fake()->sentence(),
         ];
     }
 }

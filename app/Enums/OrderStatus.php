@@ -2,20 +2,33 @@
 
 namespace App\Enums;
 
-enum OrderStatus : string
+enum OrderStatus: string
 {
-    case Received = 'received';
+    case Pending = 'pending';
+    case Preparing = 'preparing';
     case Shipped = 'shipped';
-    case Refunded = 'refund';
+    case Received = 'received';
     case Cancelled = 'cancelled';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::Pending => 'Order Placed',
+            self::Preparing => 'Preparing & Cutting',
+            self::Shipped => 'Out for Delivery / Ready for Pickup',
+            self::Received => 'Delivered / Completed',
+            self::Cancelled => 'Cancelled',
+        };
+    }
 
     public function notificationMessage(): string
     {
-        return match($this){
-            self::Received => 'We are currently preparing your order.',
-            self::Shipped => 'Your order is on your way. Please wait for the rider to deliver your order',
-            self::Refunded => 'We are done processing the refund. Please check your balance',
-            self::Cancelled => 'We apologize for the inconvenience. Your order is cancelled'
+        return match ($this) {
+            self::Pending => 'Order placed and waiting for shop confirmation.',
+            self::Preparing => 'The butcher is currently preparing and cutting your order.',
+            self::Shipped => 'Your order is on the way with our rider or ready for pickup.',
+            self::Received => 'Your order has been successfully delivered and completed.',
+            self::Cancelled => 'This order has been cancelled.',
         };
     }
 }

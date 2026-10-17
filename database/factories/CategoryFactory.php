@@ -18,14 +18,12 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique()->randomElement([
-            'Premium Beef', 'Fresh Pork', 'Poultry', 
-            'Seafood', 'Processed Meats', 'Specialty Cuts'
-        ]);
+        $name = fake()->unique()->words(2, true);
 
         return [
-            'name' => $name,
+            'name' => ucwords($name),
             'slug' => Str::slug($name),
+            'description' => fake()->sentence(),
         ];
     }
 }
