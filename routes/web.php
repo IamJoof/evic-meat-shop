@@ -23,6 +23,7 @@ Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.s
 
 Route::get('/orders/{order:order_number}', [CustomerOrderController::class, 'show'])->name('orders.show');
 Route::post('/orders/{order:order_number}/cancel', [CustomerOrderController::class, 'cancel'])->name('orders.cancel');
+Route::post('/claim-account', [\App\Http\Controllers\ClaimAccountController::class, 'store'])->name('claim-account.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
