@@ -30,5 +30,7 @@ yarn-error.log
 /.superpowers
 /.agents
 /.ai
+/docs
+/AGENTS.md
 /database/*.sqlite
 
