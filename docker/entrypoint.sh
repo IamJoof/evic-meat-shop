@@ -13,8 +13,16 @@ touch /var/www/html/database/database.sqlite
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 
-# Run database migrations and cache config in production
+# Ensure valid APP_KEY exists
+if [ -z "$APP_KEY" ]; then
+    echo "APP_KEY is missing. Generating application key..."
+    php artisan key:generate --force
+fi
+
+# Run database migrations (and seed if empty)
 php artisan migrate --force
+php artisan db:seed --force
+
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
