@@ -97,7 +97,23 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    'key' => env('APP_KEY'),
+    'key' => call_user_func(function () {
+        $key = env('APP_KEY');
+        if (empty($key)) {
+            return null;
+        }
+        // If already valid base64 key format, return as-is
+        if (str_starts_with($key, 'base64:')) {
+            return $key;
+        }
+        // If 32 characters exact string, return as-is
+        if (strlen($key) === 32) {
+            return $key;
+        }
+
+        // If Render generated a raw random string of arbitrary length, hash it to 32 bytes base64
+        return 'base64:'.base64_encode(hash('sha256', $key, true));
+    }),
 
     'previous_keys' => [
         ...array_filter(
