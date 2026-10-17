@@ -20,8 +20,10 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => null,
+            'guest_id' => fake()->uuid(),
             'order_number' => 'EVIC-'.date('Ymd').'-'.strtoupper(fake()->unique()->bothify('##??')),
             'customer_name' => fake()->name(),
+            'customer_email' => fake()->safeEmail(),
             'customer_phone' => fake()->phoneNumber(),
             'customer_address' => fake()->address(),
             'fulfillment_type' => fake()->randomElement(['delivery', 'pickup']),
